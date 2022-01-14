@@ -1,24 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
+import Counter from './components/basic/Counter';
+import CounterArrow from './components/basic/CounterArrow';
+import CounterHook from './components/basic/CounterHook';
+import ParentComponent from './components/parentchild/ParentComponent';
+import ParentName from './components/parentchild/ParentName';
+import EmployeeList from './components/parentchild/EmployeeList';
+import CartListItem from './components/parentchild/CartListItem';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // untuk mengwrap dua komponents harus menggunakan tanda seperti ini <> atau fragment
+    <>
+    {/* <Counter/>
+    <CounterArrow/>
+    <CounterHook/> */}
+    <CartListItem/>
+    </>
+
   );
 }
 
