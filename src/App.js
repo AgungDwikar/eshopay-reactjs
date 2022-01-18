@@ -6,6 +6,7 @@ import ParentComponent from './components/parentchild/ParentComponent';
 import ParentName from './components/parentchild/ParentName';
 import EmployeeList from './components/parentchild/EmployeeList';
 import CartListItem from './components/parentchild/CartListItem';
+import CartList from './components/basicform/CartList';
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
     {/* <Counter/>
     <CounterArrow/>
     <CounterHook/> */}
-    <CartListItem/>
+    {/* <CartListItem/> */}
+    <CartList/>
     </>
 
   );
