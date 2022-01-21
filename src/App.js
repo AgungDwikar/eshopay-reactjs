@@ -6,7 +6,12 @@ import ParentComponent from './components/parentchild/ParentComponent';
 import ParentName from './components/parentchild/ParentName';
 import EmployeeList from './components/parentchild/EmployeeList';
 import CartListItem from './components/parentchild/CartListItem';
-import CartList from './components/basicform/CartList';
+// import CartList from './components/basicform/CartList';
+import CartList from './views/cart/CartList';
+// memanggil database store redux
+import store from './redux/stores';
+// jangan lupa panggil penghubungnya yaitu provider
+import { Provider } from 'react-redux';
 
 function App() {
   return (
@@ -16,7 +21,11 @@ function App() {
     <CounterArrow/>
     <CounterHook/> */}
     {/* <CartListItem/> */}
-    <CartList/>
+    {/* <CartList/> */}
+
+    <Provider store={store}>
+      <CartList/>
+    </Provider>
     </>
 
   );
