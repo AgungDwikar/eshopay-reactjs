@@ -11,10 +11,10 @@ import {
     doOnSelectChange,
     doOnCheckItem,
     doSetDisplayItems,
-    doTotalHargaList,
-    doTotalQtyList,
-    doTotalHarga,
-    doTotalQty
+    // doTotalHargaList,
+    // doTotalQtyList,
+    // doTotalHarga,
+    // doTotalQty
 } from "../../redux/actions/cartAction";
 import TableList from "./TableList";
 import ListCheckout from "./ListCheckout";

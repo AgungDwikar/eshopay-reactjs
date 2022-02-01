@@ -1,15 +1,28 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import apiCategory from "../../api/apiCategory";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
-export default function AddCategory(props) {
+export default function EditCategory(props) {
     // let navigate = useNavigate();
     const [values, setValues] = useState({
         cate_id: undefined,
         cate_name: "",
     });
+
+    // hanya di panggil satu kali satu page edit muncul
+    // props mirip parameter atau objek yang bisa kita panggil
+    useEffect(() => {apiCategory.findRow(props.id)
+            .then((data) => {
+                setValues({
+                    ...values,
+                    cate_id: data.cate_id,
+                    cate_name: data.cate_name,
+                });
+            })
+            .catch((error) => console.log(error));
+    }, []);
 
     // high order components
     const handleChange = (name) => (event) => {
@@ -18,15 +31,16 @@ export default function AddCategory(props) {
 
     const onSubmit = async () => {
         const payload = {
+            cate_id: values.cate_id,
             cate_name: values.cate_name.toUpperCase() || "",
         };
 
         await apiCategory
-            .createRow(payload)
+            .updateRow(payload)
             .then((result) => {
                 // console.log(result);
                 props.closeModal();
-                toast.success("Data Successfull inserted")
+                toast.success("Data has been updated");
                 props.onRefresh();
             })
             .catch((error) => console.log(error));
@@ -79,12 +93,20 @@ export default function AddCategory(props) {
                             <div className="mt-2">
                                 <form action="#" method="POST">
                                     <div className="col-span-6 sm:col-span-3">
+                                        <input
+                                            type="text"
+                                            name="cate_id"
+                                            value={values.cate_id}
+                                            onChange={handleChange("cate_id")}
+                                            hidden
+                                        />
                                         <label
                                             htmlFor="last-name"
                                             className="block text-sm font-medium text-gray-700"
                                         >
                                             Category Name
                                         </label>
+
                                         <input
                                             type="text"
                                             name="cate_name"

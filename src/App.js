@@ -1,5 +1,5 @@
 import './App.css';
-import MainLayout from './layout/MainLayout';
+// import MainLayout from './layout/MainLayout';
 // import Counter from './components/basic/Counter';
 // import CounterArrow from './components/basic/CounterArrow';
 // import CounterHook from './components/basic/CounterHook';
@@ -15,24 +15,26 @@ import MainLayout from './layout/MainLayout';
 // import store from './redux/stores';
 // jangan lupa panggil penghubungnya yaitu provider
 // import { Provider } from 'react-redux';
+import Routes from "./Routes"
 
 function App() {
   return (
     // untuk mengwrap dua komponents harus menggunakan tanda seperti ini <> atau fragment
-    <>
-    {/* <Counter/>
-    <CounterArrow/>
-    <CounterHook/> */}
-    {/* <CartListItem/> */}
-    {/* <CartList/> */}
+    // <>
+    // {/* <Counter/>
+    // <CounterArrow/>
+    // <CounterHook/> */}
+    // {/* <CartListItem/> */}
+    // {/* <CartList/> */}
 
     
-      {/* <CartList/> */}
-      {/* <CartListToolkit/> */}
-      {/* <Categories/> */}
-      <MainLayout/>
+    //   {/* <CartList/> */}
+    //   {/* <CartListToolkit/> */}
+    //   {/* <Categories/> */}
+    //   <MainLayout/>
 
-    </>
+    // </>
+    <Routes/>
 
   );
 }

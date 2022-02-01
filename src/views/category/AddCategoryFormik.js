@@ -1,37 +1,61 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 // import { useNavigate } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import apiCategory from "../../api/apiCategory";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
-export default function AddCategory(props) {
+export default function AddCateoryFormik(props) {
     // let navigate = useNavigate();
-    const [values, setValues] = useState({
-        cate_id: undefined,
-        cate_name: "",
-    });
+    // const [values, setValues] = useState({
+    //     cate_id: undefined,
+    //     cate_name: "",
+    // });
 
     // high order components
-    const handleChange = (name) => (event) => {
-        setValues({ ...values, [name]: event.target.value });
-    };
+    // const handleChange = (name) => (event) => {
+    //     setValues({ ...values, [name]: event.target.value });
+    // };
 
-    const onSubmit = async () => {
-        const payload = {
-            cate_name: values.cate_name.toUpperCase() || "",
-        };
+    // const onSubmit = async () => {
+    //     const payload = {
+    //         cate_name: values.cate_name.toUpperCase() || "",
+    //     };
 
-        await apiCategory
-            .createRow(payload)
-            .then((result) => {
-                // console.log(result);
-                props.closeModal();
-                toast.success("Data Successfull inserted")
-                props.onRefresh();
-            })
-            .catch((error) => console.log(error));
-    };
+    //     await apiCategory
+    //         .createRow(payload)
+    //         .then((result) => {
+    //             // console.log(result);
+    //             props.closeModal();
+    //             toast.success("Data Successfull inserted")
+    //             props.onRefresh();
+    //         })
+    //         .catch((error) => console.log(error));
+    // };
 
+    const formik = useFormik({
+        initialValues: {
+            cate_name: "",
+        },
+        validationSchema: Yup.object().shape({
+            cate_name: Yup.string().required("please entere category name"),
+        }),
+        onSubmit: async (values) => {
+            const payload = {
+                cate_name: values.cate_name.toUpperCase() || "",
+            };
+            await apiCategory
+                .createRow(payload)
+                .then(() => {
+                    // console.log(result);
+                    props.closeModal();
+                    toast.success("Data Successfull inserted");
+                    props.onRefresh();
+                })
+                .catch((error) => console.log(error));
+        },
+    });
     return (
         <Transition appear show={props.isOpen} as={Fragment}>
             <Dialog
@@ -87,11 +111,19 @@ export default function AddCategory(props) {
                                         </label>
                                         <input
                                             type="text"
+                                            id="cate_name"
                                             name="cate_name"
-                                            value={values.cate_name}
-                                            onChange={handleChange("cate_name")}
+                                            value={formik.values.cate_name}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 uppercase rounded-md"
                                         />
+                                        {formik.touched.cate_name &&
+                                        formik.errors.cate_name ? (
+                                            <span className="text-rose-600">
+                                                {formik.errors.cate_name}
+                                            </span>
+                                        ) : null}
                                     </div>
                                 </form>
                             </div>
@@ -100,7 +132,7 @@ export default function AddCategory(props) {
                                 <button
                                     type="button"
                                     className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                                    onClick={onSubmit}
+                                    onClick={formik.handleSubmit}
                                 >
                                     Submit
                                 </button>

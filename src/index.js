@@ -7,8 +7,10 @@ import { Provider } from "react-redux";
 // import store from "./redux/stores";
 import storeToolkit from "./features/storeToolkit"
 import {createBrowserHistory} from "history";
-import {Router} from "react-router-dom";
-import Routes from "./Routes";
+import {BrowserRouter} from "react-router-dom";
+// import Routes from "./Routes";
+import {HelmetProvider} from "react-helmet-async"
+import App from "./App";
 
 const browserHistory = createBrowserHistory();
 
@@ -30,9 +32,11 @@ browserHistory.listen(location => {
   
 ReactDOM.render(
     <Provider store={storeToolkit}>
-            <Router history={browserHistory}>
-                <Routes/>
-            </Router>
+      <HelmetProvider>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
+      </HelmetProvider>
     </Provider>,
     document.getElementById("root")
 );
