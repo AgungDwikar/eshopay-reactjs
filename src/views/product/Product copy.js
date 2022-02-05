@@ -1,12 +1,9 @@
-import React, { Fragment, useState, useEffect } from "react";
-import apiProduct from "../../api/apiProduct";
+import React, { useState, useEffect, Fragment } from "react";
 import { useNavigate, NavLink, Link, useLocation } from "react-router-dom";
 import Page from "../../components/commons/Page";
-import { Dialog, Menu, Transition } from "@headlessui/react";
-//theming toast
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import apiProduct from "../../api/apiProduct";
 import config from "../../config/config";
+import { Menu, Transition } from "@headlessui/react";
 
 import {
     DotsVerticalIcon,
@@ -30,53 +27,27 @@ function classNames(...classes) {
 }
 
 export default function Product() {
+    // berpindah halaman dengan navigate
     let navigate = useNavigate();
-    const { state } = useLocation();
+    // 1.create state products
     const [products, setProducts] = useState([]);
-    let [refresh, setRefresh] = useState(false);
     let [loading, setLoading] = useState(false);
 
+    // 2.declare useeffect product, non  depedency
+    // array di kosongkan artinya useeffect akan mentriger 1 kali saat page di ekskusi di web
+    // function harus menggunakan tanda kurung
+    // apiproduct bersifat asyncronus maka mengget datanya harus menggunakan then
     useEffect(() => {
-        apiProduct
-            .findAll()
-            .then((data) => {
-                setProducts(data);
-                setLoading(true);
-            })
-            .catch((error) => {
-                console.log(error.message);
-            });
+        apiProduct.findAll().then((result) => {
+            setProducts(result);
+            setLoading(true);
+        });
     }, []);
-
-    useEffect(() => {
-        apiProduct
-            .findAll()
-            .then((data) => {
-                setProducts(data);
-                setLoading(true);
-            })
-            .catch((error) => {
-                console.log(error.message);
-            });
-            setRefresh(false);
-    }, [refresh || (state ? state.refresh : null)]);
-
-    const onDelete = async (id) => {
-        apiProduct
-            .deleteRow(id)
-            .then(() => {
-                toast.success("Data has been deleted.");
-            })
-            .catch((error) => {
-                toast.success(error.message);
-            });
-    };
 
     return (
         <>
             <Page
-                title="Products"
-                titleButton="create"
+                title="product" titleButton="create"
                 onClick={() => navigate("/dashboard/product/new")}
             >
                 <div className="hidden mt-8 sm:block">
@@ -85,37 +56,39 @@ export default function Product() {
                             <table className="min-w-full">
                                 <thead>
                                     <tr className="border-t border-gray-200">
-                                        {(columns || []).map((column) => (
-                                            <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                <span className="lg:pl-2">
-                                                    {column.name}
-                                                </span>
+                                        {(columns || []).map((col, index) => (
+                                            <th
+                                                key={index}
+                                                className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            >
+                                                <span>{col.name}</span>
                                             </th>
                                         ))}
-
                                         <th className="pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider" />
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-100">
                                     {products &&
-                                        products.map((data) => (
-                                            <tr key={data.prod_id}>
+                                        products.map((prod) => (
+                                            <tr key={prod.prod_id}>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
                                                         <div className="flex-shrink-0 h-10 w-10">
                                                             <img
                                                                 className="h-10 w-10 rounded-full"
-                                                                src={`${config.urlImage}/${data.prod_url_image}`}
-                                                                alt={`${data.prod_id}`}
+                                                                src={`${config.urlImage}/${prod.prod_url_image}`}
+                                                                alt={
+                                                                    prod.prod_url_image
+                                                                }
                                                             />
                                                         </div>
                                                         <div className="ml-4">
                                                             <div className="text-sm font-medium text-gray-900">
-                                                                {data.prod_name}
+                                                                {prod.prod_name}
                                                             </div>
                                                             <div className="text-sm text-gray-500">
                                                                 {
-                                                                    data
+                                                                    prod
                                                                         .category
                                                                         .cate_name
                                                                 }
@@ -123,24 +96,24 @@ export default function Product() {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-justify">
-                                                    {data.prod_desc}
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                    {prod.prod_desc}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-justify">
                                                     Rp.{" "}
                                                     {new Intl.NumberFormat(
                                                         "ID"
-                                                    ).format(data.prod_price)}
+                                                    ).format(prod.prod_price)}
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 flex text-justify justify-center items-center">
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-90 text-justify">
                                                     {new Intl.NumberFormat(
                                                         "ID"
-                                                    ).format(data.prod_stock)}
+                                                    ).format(prod.prod_stock)}
                                                 </td>
                                                 <td className="pr-6">
                                                     <Menu
                                                         as="div"
-                                                        className="relative flex justify-center items-center"
+                                                        className="relative flex justify-center items-start"
                                                     >
                                                         {({ open }) => (
                                                             <>
@@ -224,16 +197,10 @@ export default function Product() {
                                                                                 }) => (
                                                                                     <Link
                                                                                         to="#"
-                                                                                        onClick={() => {
-                                                                                            if (
-                                                                                                window.confirm(
-                                                                                                    "Delete this record ?"
-                                                                                                )
-                                                                                            )
-                                                                                                onDelete(
-                                                                                                    data.prod_id
-                                                                                                );
-                                                                                        }}
+                                                                                        // onClick={() => {
+                                                                                        //     if (window.confirm("Delete this record ?"))
+                                                                                        //         onDelete(data.prod_id)
+                                                                                        // }}
                                                                                         className={classNames(
                                                                                             active
                                                                                                 ? "bg-gray-100 text-gray-900"
@@ -273,7 +240,6 @@ export default function Product() {
                     </div>
                 </div>
             </Page>
-            <ToastContainer autoClose={2000} />
         </>
     );
 }

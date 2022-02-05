@@ -6,7 +6,6 @@ import Page from "../../components/commons/Page";
 import AddCategory from "./AddCategory";
 import EditCategory from "./EditCategory";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import {
     DotsVerticalIcon,
     DuplicateIcon,
@@ -67,7 +66,11 @@ function Categories() {
 
     return (
         <div className="ml-3 mt-5">
-            <Page title="category" onClick={() => setIsOpen(true)}>
+            <Page
+                title="category"
+                titleButton="create"
+                onClick={() => setIsOpen(true)}
+            >
                 {loading ? (
                     <table className="min-w-full">
                         <thead>
@@ -159,7 +162,11 @@ function Categories() {
                                                                             <Link
                                                                                 to="#"
                                                                                 onClick={() => {
-                                                                                    if (window.confirm("Delete this record")) {
+                                                                                    if (
+                                                                                        window.confirm(
+                                                                                            "Delete this record"
+                                                                                        )
+                                                                                    ) {
                                                                                         onDelete(
                                                                                             cate.cate_id
                                                                                         );

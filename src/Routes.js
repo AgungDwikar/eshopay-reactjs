@@ -10,6 +10,7 @@ import DashboardLayout from "./layout/DashboardLayout";
 import Order from "./views/order/Order";
 import AccountPayment from "./views/payment/AccountPayment";
 import TransactionPayment from "./views/payment/TransactionPaymennt";
+import AddProduct from "./views/product/AddProduct";
 
 export default function Routes() {
     return useRoutes([
@@ -34,6 +35,7 @@ export default function Routes() {
             children: [
                 { path: "category", element: <Categories /> },
                 { path: "product", element: <Product /> },
+                { path: "product/new", element: <AddProduct /> },
                 { path: "order", element: <Order /> },
                 { path: "payment", element: <AccountPayment /> },
                 { path: "transaction", element: <TransactionPayment /> },
