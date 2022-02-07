@@ -22,4 +22,14 @@ const addProduct = async (payload) => {
     }
 };
 
-export default { findAll, addProduct};
+const deleteRow = async(id)=>{
+    try {
+        const result = await axios.delete(`${config.localDomain}product/${id}`);
+        return  result;
+    } catch (error) {
+        return error;
+        
+    }
+}
+
+export default { findAll, addProduct, deleteRow};

@@ -5,12 +5,14 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 // import store from "./redux/stores";
-import storeToolkit from "./features/storeToolkit"
+// import storeToolkit from "./features/storeToolkit"
 import {createBrowserHistory} from "history";
 import {BrowserRouter} from "react-router-dom";
 // import Routes from "./Routes";
 import {HelmetProvider} from "react-helmet-async"
 import App from "./App";
+
+import store from "./redux-saga/stores";
 
 const browserHistory = createBrowserHistory();
 
@@ -31,7 +33,7 @@ browserHistory.listen(location => {
   });
   
 ReactDOM.render(
-    <Provider store={storeToolkit}>
+    <Provider store={store}>
       <HelmetProvider>
             <BrowserRouter>
                 <App/>

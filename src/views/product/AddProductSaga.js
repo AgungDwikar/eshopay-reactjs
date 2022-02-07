@@ -6,22 +6,28 @@ import { ToastContainer, toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import apiProduct from "../../api/apiProduct";
-import apiCategory from "../../api/apiCategory";
+// import kebutuhan redux saga
+import { useDispatch, useSelector } from "react-redux";
+import { doCategoryRequest } from "../../redux-saga/actions/CategoryAction";
+import { doAddProductRequest } from "../../redux-saga/actions/ProductAction";
 
 const listCondition = ["New", "Second", "Refurbish"];
 
-export default function AddProduct(props) {
+export default function AddProductSaga(props) {
     let navigate = useNavigate();
     const [startDate, setStartDate] = useState(new Date());
-    const [categories, setCategories] = useState([]);
     const [uploaded, setUploaded] = useState(false);
     const [previewImg, setPreviewImg] = useState();
-    //fetch category
+
+    // komponen redux
+    const dispatch = useDispatch();
+    const categories = useSelector(state => state.categoryState.category)
+
+
+    //fetch category 
     useEffect(() => {
-        apiCategory
-            .list()
-            .then((data) => setCategories(data))
-            .catch((error) => console.log(error.message));
+        dispatch(doCategoryRequest())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const validationSchema = Yup.object().shape({
@@ -67,10 +73,16 @@ export default function AddProduct(props) {
             payload.append("prod_brand", values.prod_brand);
             payload.append("prod_images", values.prod_images);
 
-            // post with axios
-            apiProduct.addProduct(payload).then((response) => {
-                toast.success(response.message);
-            });
+            // post with api with axios
+            // apiProduct.addProduct(payload).then((response) => {
+            //     toast.success(response.message);
+            // });
+
+            // -->call api menggunakan redux saga
+            dispatch(doAddProductRequest(payload))
+
+
+            // call navigate to back to product list components
             navigate("/dashboard/product", { state: { refresh: true } });
         },
     });
@@ -97,7 +109,7 @@ export default function AddProduct(props) {
     return (
         <>
             <Page
-                title="Add Products"
+                title="Add Products Redux saga"
                 titleButton="create"
                 onClick={() => navigate(-1)}
             >
